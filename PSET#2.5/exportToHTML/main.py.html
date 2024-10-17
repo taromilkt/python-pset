@@ -1,0 +1,155 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #7a7e85;}
+.s1 { color: #bcbec4;}
+.s2 { color: #cf8e6d;}
+.s3 { color: #bcbec4;}
+.s4 { color: #6aab73;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0"># programmer: Lindsey Nguyen</span>
+<span class="s0"># date of submission: 10/23/2024</span>
+
+<span class="s0"># PSET 2</span>
+<span class="s0"># ==============================</span>
+
+<span class="s0"># Problem #5: Find interesting words</span>
+
+<span class="s0"># This program removes common stop words from a text, counts word frequencies, and reports words that appear more than a specified threshold.</span>
+
+<span class="s2">from </span><span class="s1">collections </span><span class="s2">import </span><span class="s1">Counter</span>
+
+<span class="s1">stop_words </span><span class="s3">= [</span><span class="s4">&quot;a&quot;</span><span class="s3">, </span><span class="s4">&quot;an&quot;</span><span class="s3">, </span><span class="s4">&quot;and&quot;</span><span class="s3">, </span><span class="s4">&quot;are&quot;</span><span class="s3">, </span><span class="s4">&quot;as&quot;</span><span class="s3">, </span><span class="s4">&quot;at&quot;</span><span class="s3">, </span><span class="s4">&quot;be&quot;</span><span class="s3">, </span><span class="s4">&quot;been&quot;</span><span class="s3">, </span><span class="s4">&quot;by&quot;</span><span class="s3">, </span><span class="s4">&quot;for&quot;</span><span class="s3">,</span>
+<span class="s4">&quot;from&quot;</span><span class="s3">, </span><span class="s4">&quot;has&quot;</span><span class="s3">, </span><span class="s4">&quot;have&quot;</span><span class="s3">, </span><span class="s4">&quot;had&quot;</span><span class="s3">, </span><span class="s4">&quot;his&quot;</span><span class="s3">, </span><span class="s4">&quot;her&quot;</span><span class="s3">, </span><span class="s4">&quot;he&quot;</span><span class="s3">, </span><span class="s4">&quot;in&quot;</span><span class="s3">, </span><span class="s4">&quot;is&quot;</span><span class="s3">, </span><span class="s4">&quot;it&quot;</span><span class="s3">, </span><span class="s4">&quot;its&quot;</span><span class="s3">, </span><span class="s4">&quot;it’s&quot;</span><span class="s3">,</span>
+<span class="s4">&quot;of&quot;</span><span class="s3">, </span><span class="s4">&quot;that&quot;</span><span class="s3">, </span><span class="s4">&quot;the&quot;</span><span class="s3">, </span><span class="s4">&quot;there&quot;</span><span class="s3">, </span><span class="s4">&quot;to&quot;</span><span class="s3">, </span><span class="s4">&quot;was&quot;</span><span class="s3">, </span><span class="s4">&quot;were&quot;</span><span class="s3">, </span><span class="s4">&quot;will&quot;</span><span class="s3">, </span><span class="s4">&quot;with&quot;</span><span class="s3">, </span><span class="s4">&quot;which&quot;</span><span class="s3">]</span>
+
+<span class="s2">def </span><span class="s1">filter_stop_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">custom_stop_words</span><span class="s3">=</span><span class="s2">None</span><span class="s3">):</span>
+    <span class="s2">if </span><span class="s1">custom_stop_words</span><span class="s3">:</span>
+        <span class="s1">stop_words </span><span class="s3">= </span><span class="s1">stop_words </span><span class="s3">+ </span><span class="s1">custom_stop_words</span>
+
+    <span class="s1">filter_list </span><span class="s3">= []</span>
+    <span class="s1">words </span><span class="s3">= </span><span class="s1">text</span><span class="s3">.</span><span class="s1">split</span><span class="s3">()</span>
+    <span class="s2">for </span><span class="s1">word </span><span class="s2">in </span><span class="s1">words</span><span class="s3">:</span>
+        <span class="s2">if </span><span class="s1">word </span><span class="s2">not in </span><span class="s1">stop_words</span><span class="s3">:</span>
+            <span class="s1">filter_list</span><span class="s3">.</span><span class="s1">append</span><span class="s3">(</span><span class="s1">word</span><span class="s3">)</span>
+    <span class="s2">return </span><span class="s1">filter_list</span>
+
+<span class="s2">def </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">,</span><span class="s1">custom_stop_words</span><span class="s3">=</span><span class="s2">None</span><span class="s3">):</span>
+    <span class="s1">filtered_words </span><span class="s3">= </span><span class="s1">filter_stop_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">custom_stop_words</span><span class="s3">)</span>
+
+    <span class="s1">word_counts </span><span class="s3">= </span><span class="s1">Counter</span><span class="s3">(</span><span class="s1">filtered_words</span><span class="s3">)</span>
+
+    <span class="s1">interesting_words </span><span class="s3">= {}</span>
+    <span class="s2">for </span><span class="s1">word</span><span class="s3">, </span><span class="s1">count </span><span class="s2">in </span><span class="s1">word_counts</span><span class="s3">.</span><span class="s1">items</span><span class="s3">():</span>
+        <span class="s2">if </span><span class="s1">count </span><span class="s3">&gt; </span><span class="s1">threshold</span><span class="s3">:</span>
+            <span class="s1">interesting_words</span><span class="s3">[</span><span class="s1">word</span><span class="s3">] = </span><span class="s1">count</span>
+    <span class="s2">return </span><span class="s1">interesting_words</span>
+
+<span class="s2">def </span><span class="s1">test_1</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s4">&quot;&quot;&quot;There are many works that have been pointed to as) possible sources for Shakespeare's play—from ancient  
+Greek tragedies to Elizabethan plays. The editors of the Arden Shakespeare question the idea of &quot;source hunting&quot;, 
+pointing out that it presupposes that authors always require ideas from other works for their own, and 
+suggests that no author can have an original idea or be an originator. When Shakespeare wrote, there  
+were many stories about sons avenging the murder of their fathers, and many about clever avenging 
+sons pretending to be foolish in order to outsmart their foes. This would include the story of the ancient 
+Roman, Lucius Junius Brutus, which Shakespeare apparently knew, as well as the story of Amleth, which was preserved 
+in Latin by 13th-century chronicler Saxo Grammaticus in his Gesta Danorum, and printed in Paris in 1514. The Amleth 
+story was subsequently adapted and then published in French in 1570 by the 16th-century scholar 
+François de Belleforest. It has a number of plot elements and major characters in common with Shakespeare’s 
+Hamlet, and lacks others that are found in Shakespeare. Belleforest's story was first published in English in 1608, 
+after Hamlet had been written, though it's possible that Shakespeare had encountered it in the French-language version. 
+&quot;&quot;&quot;</span>
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">2 </span><span class="s0"># repeated words shown twice</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">)</span>
+
+    <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;Interesting words (occurrences &gt; </span><span class="s2">{</span><span class="s1">threshold</span><span class="s2">}</span><span class="s4">):&quot;</span><span class="s3">)</span>
+    <span class="s2">for </span><span class="s1">word </span><span class="s2">in </span><span class="s1">interesting_words</span><span class="s3">:</span>
+        <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;</span><span class="s2">{</span><span class="s1">word</span><span class="s2">}</span><span class="s4">: </span><span class="s2">{</span><span class="s1">interesting_words</span><span class="s3">[</span><span class="s1">word</span><span class="s3">]</span><span class="s2">}</span><span class="s4">&quot;</span><span class="s3">)</span>
+
+
+<span class="s2">def </span><span class="s1">test_2</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s4">&quot;&quot;&quot; Dandadan is a Japanese manga series created by Yukinobu Tatsu. The story blends supernatural and science fiction elements,  
+    following two high school students, Momo Ayase and Ken Takakura (Okarun). Momo believes in ghosts but not in aliens, while Okarun  
+    believes in aliens but not in ghosts. Their worlds collide when they encounter both paranormal entities and extraterrestrial beings,  
+    leading to exciting battles and strange adventures. The series is known for its dynamic mix of humor, romance, action, and supernatural elements,  
+    making it unique in its genre.Dandadan is serialized in Shonen Jump+, with an anime adaptation set to release in October 2024. Fans of quirky,  
+    fast-paced storytelling will enjoy the wild ride as Momo and Okarun face off against ghosts, aliens, and even more bizarre foes. The story is fast-paced, 
+     with Momo and Okarun constantly encountering strange entities like ghosts, aliens, and paranormal beings. This keeps the story interesting, with action, humor, and romance throughout.  
+     The series has quickly become a favorite in the Shonen Jump+ lineup due to its unique storytelling and mix of genres. Fans of science fiction, supernatural,  
+     and comedy are sure to find Dandadan an entertaining read.&quot;&quot;&quot;</span>
+
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">3 </span><span class="s0"># repeated words shown twice</span>
+    <span class="s1">custom_stop_words </span><span class="s3">= [</span><span class="s4">&quot;story&quot;</span><span class="s3">, </span><span class="s4">&quot;series&quot;</span><span class="s3">]</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">, </span><span class="s1">custom_stop_words</span><span class="s3">)</span>
+
+    <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;Interesting words (occurrences &gt; </span><span class="s2">{</span><span class="s1">threshold</span><span class="s2">}</span><span class="s4">):&quot;</span><span class="s3">)</span>
+    <span class="s2">for </span><span class="s1">word </span><span class="s2">in </span><span class="s1">interesting_words</span><span class="s3">:</span>
+        <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;</span><span class="s2">{</span><span class="s1">word</span><span class="s2">}</span><span class="s4">: </span><span class="s2">{</span><span class="s1">interesting_words</span><span class="s3">[</span><span class="s1">word</span><span class="s3">]</span><span class="s2">}</span><span class="s4">&quot;</span><span class="s3">)</span>
+
+<span class="s2">def </span><span class="s1">test_3</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s4">&quot;&quot;&quot; To make pho, a traditional Vietnamese soup, you start by simmering a rich, flavorful broth made from beef bones or chicken bones, depending on your choice of pho.  
+    The broth is the heart of pho and takes several hours to develop its deep, savory flavor. Along with the bones, you'll add onions, ginger,  
+    and a mix of spices like star anise, cinnamon, cloves, and cardamom. Once the broth is ready, it’s poured over rice noodles, thin slices of beef or chicken,  
+    and garnished with fresh herbs such as cilantro, basil, and green onions. To enhance the flavor, serve with optional toppings like lime, bean sprouts, hoisin sauce, and sriracha. 
+     The key to great pho is balancing the savory broth with the fresh toppings, creating layers of flavor in every bite.&quot;&quot;&quot;</span>
+
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">1 </span><span class="s0"># repeated words shown twice</span>
+    <span class="s1">custom_stop_words </span><span class="s3">= [</span><span class="s4">&quot;make&quot;</span><span class="s3">, </span><span class="s4">&quot;made&quot;</span><span class="s3">,</span><span class="s4">&quot;add&quot;</span><span class="s3">, </span><span class="s4">&quot;or&quot;</span><span class="s3">]</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">, </span><span class="s1">custom_stop_words</span><span class="s3">)</span>
+
+    <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;Interesting words (occurrences &gt; </span><span class="s2">{</span><span class="s1">threshold</span><span class="s2">}</span><span class="s4">):&quot;</span><span class="s3">)</span>
+    <span class="s2">for </span><span class="s1">word </span><span class="s2">in </span><span class="s1">interesting_words</span><span class="s3">:</span>
+        <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;</span><span class="s2">{</span><span class="s1">word</span><span class="s2">}</span><span class="s4">: </span><span class="s2">{</span><span class="s1">interesting_words</span><span class="s3">[</span><span class="s1">word</span><span class="s3">]</span><span class="s2">}</span><span class="s4">&quot;</span><span class="s3">)</span>
+
+<span class="s2">def </span><span class="s1">test_4</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s4">&quot;&quot;&quot; To play soccer, the main objective is to control the ball. 
+     Players pass the ball to teammates and dribble the ball down the field.  
+     When a player kicks the ball into the goal, their team scores. 
+     Passing the ball requires accuracy, and players must keep the ball away from opponents.  
+     Dribbling the ball involves moving quickly while maintaining control of the ball.  
+     The ball can also be kicked to clear it away from defenders or towards the goal. 
+     Keeping the ball under control is key to winning in soccer&quot;&quot;&quot;</span>
+
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">5 </span><span class="s0"># repeated words shown twice</span>
+    <span class="s1">custom_stop_words </span><span class="s3">= [</span><span class="s4">&quot;game&quot;</span><span class="s3">,</span><span class="s4">&quot;hit&quot;</span><span class="s3">]</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">, </span><span class="s1">custom_stop_words</span><span class="s3">)</span>
+
+    <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;Interesting words (occurrences &gt; </span><span class="s2">{</span><span class="s1">threshold</span><span class="s2">}</span><span class="s4">):&quot;</span><span class="s3">)</span>
+    <span class="s2">for </span><span class="s1">word </span><span class="s2">in </span><span class="s1">interesting_words</span><span class="s3">:</span>
+        <span class="s1">print</span><span class="s3">(</span><span class="s4">f&quot;</span><span class="s2">{</span><span class="s1">word</span><span class="s2">}</span><span class="s4">: </span><span class="s2">{</span><span class="s1">interesting_words</span><span class="s3">[</span><span class="s1">word</span><span class="s3">]</span><span class="s2">}</span><span class="s4">&quot;</span><span class="s3">)</span>
+
+<span class="s2">def </span><span class="s1">test_5</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s4">&quot;&quot;&quot;There are many works that have been pointed to as possible sources for Shakespeare's play&quot;&quot;&quot;</span>
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">500  </span><span class="s0"># Unreasonably high threshold</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">)</span>
+    <span class="s1">print</span><span class="s3">(</span><span class="s1">interesting_words</span><span class="s3">)  </span><span class="s0"># This will likely print an empty dictionary</span>
+
+<span class="s2">def </span><span class="s1">test_6</span><span class="s3">():</span>
+    <span class="s1">text </span><span class="s3">= </span><span class="s5">445678  </span><span class="s0"># Passing an integer instead of a string</span>
+    <span class="s1">threshold </span><span class="s3">= </span><span class="s5">2</span>
+    <span class="s1">interesting_words </span><span class="s3">= </span><span class="s1">find_interesting_words</span><span class="s3">(</span><span class="s1">text</span><span class="s3">, </span><span class="s1">stop_words</span><span class="s3">, </span><span class="s1">threshold</span><span class="s3">)</span>
+    <span class="s1">print</span><span class="s3">(</span><span class="s1">interesting_words</span><span class="s3">)</span>
+
+
+<span class="s2">if </span><span class="s1">__name__ </span><span class="s3">== </span><span class="s4">'__main__'</span><span class="s3">:</span>
+    <span class="s0">#valid test cases</span>
+    <span class="s1">test_1</span><span class="s3">()</span>
+    <span class="s1">test_2</span><span class="s3">()</span>
+    <span class="s1">test_3</span><span class="s3">()</span>
+    <span class="s1">test_4</span><span class="s3">()</span>
+
+    <span class="s0">#invalid test cases</span>
+    <span class="s1">test_5</span><span class="s3">()</span>
+    <span class="s1">test_6</span><span class="s3">()</span></pre>
+</body>
+</html>
